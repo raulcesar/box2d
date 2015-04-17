@@ -16,6 +16,8 @@ option(BOX2D_BUILD_EXAMPLES "Build Box2D examples" ON)
 
 set(BOX2D_VERSION 2.3.2)
 set(LIB_INSTALL_DIR lib${LIB_SUFFIX})
+set(CMAKE_BUILD_TYPE DEBUG)
+
 
 # The Box2D library.
 add_subdirectory(Box2D)
@@ -26,8 +28,14 @@ if(BOX2D_BUILD_EXAMPLES)
 
   # Testbed and dependencies.
   find_package(OpenGL REQUIRED)
-  add_subdirectory(glew)
+  find_package(GLEW REQUIRED)
+  message("Glew: ${GLEW_INCLUDE_DIRS}" )
+
+
+
+  #add_subdirectory(glew)
   add_subdirectory(glfw)
+
   add_subdirectory(Testbed)
 endif(BOX2D_BUILD_EXAMPLES)
 

@@ -24,7 +24,7 @@
 #if defined(__APPLE__)
 #include <OpenGL/gl3.h>
 #else
-#include <glew/glew.h>
+#include <GL/glew.h>
 #endif
 
 #include <glfw/glfw3.h>
@@ -454,6 +454,9 @@ int main(int argc, char** argv)
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #endif
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+
 
     mainWindow = glfwCreateWindow(g_camera.m_width, g_camera.m_height, title, NULL, NULL);
 	if (mainWindow == NULL)
@@ -471,10 +474,9 @@ int main(int argc, char** argv)
 	glfwSetKeyCallback(mainWindow, sKeyCallback);
 	glfwSetMouseButtonCallback(mainWindow, sMouseButton);
 	glfwSetCursorPosCallback(mainWindow, sMouseMotion);
-	glfwSetScrollCallback(mainWindow, sScrollCallback);
 
 #if defined(__APPLE__) == FALSE
-	//glewExperimental = GL_TRUE;
+	glewExperimental = GL_TRUE; //Added this for linux...
     GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
@@ -482,8 +484,9 @@ int main(int argc, char** argv)
 		exit(EXIT_FAILURE);
 	}
 #endif
-    
+
 	g_debugDraw.Create();
+	
 
 	sCreateUI();
 

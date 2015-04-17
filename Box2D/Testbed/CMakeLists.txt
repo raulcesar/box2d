@@ -1,13 +1,21 @@
 # Some flags for Freeglut and GLUI.
 add_definitions( -DGLEW_STATIC -D_CRT_SECURE_NO_WARNINGS )
+set(CMAKE_BUILD_TYPE DEBUG)
 
 # Define the framework files.
 set(Testbed_Framework_SRCS
 	Framework/Main.cpp
-	Framework/Render.cpp
-	Framework/Render.h
+	Framework/RenderGL3.cpp
+	Framework/RenderGL3.h
 	Framework/Test.cpp
 	Framework/Test.h
+	Framework/DebugDraw.h
+	Framework/DebugDraw.cpp
+	Framework/imgui.h
+	Framework/imgui.cpp
+	Framework/stb_truetype.h
+
+
 )
 
 #define the test files.
@@ -59,11 +67,14 @@ set(Testbed_Tests_SRCS
 	Tests/Web.h
 )
 
+
 # These are used to create visual studio folders.
 source_group(Framework FILES ${Testbed_Framework_SRCS})
 source_group(Tests FILES ${Testbed_Tests_SRCS})
 
+
 include_directories (
+	${GLEW_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIR}
 	${Box2D_SOURCE_DIR}
 )
@@ -82,11 +93,15 @@ add_executable(Testbed
 	${Testbed_Tests_SRCS}
 )
 
+
+#target_link_libraries(exampleProgram ${LIBS})
 target_link_libraries (
 	Testbed
 	Box2D
-	glew
+	${LIBS}
 	glfw
+	${GLEW_LIBRARIES}
+
 	${ADDITIONAL_LIBRARIES}
 	${OPENGL_LIBRARIES}
-) 
+)
